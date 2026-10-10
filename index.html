@@ -31,28 +31,116 @@
         .neon-glow { box-shadow: 0 0 25px rgba(6, 182, 212, 0.25); }
         .text-gradient { background: linear-gradient(135deg, #ffffff 0%, #38bdf8 50%, #00f0ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .text-gradient-cyan { background: linear-gradient(135deg, #38bdf8 0%, #00f0ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .ba-container { position: relative; user-select: none; touch-action: pan-y; }
+        .ba-slider { position: absolute; top: 0; bottom: 0; left: 50%; width: 4px; background: #00f0ff; cursor: ew-resize; box-shadow: 0 0 12px #00f0ff; z-index: 20; }
+        .ba-handle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 44px; height: 44px; border-radius: 50%; background: #080c14; border: 2px solid #00f0ff; display: flex; align-items: center; justify-content: center; color: #00f0ff; box-shadow: 0 0 15px rgba(0,240,255,0.6); }
+        .ba-after-overlay { position: absolute; top: 0; left: 0; bottom: 0; width: 50%; overflow: hidden; z-index: 10; }
     </style>
 </head>
 <body class="antialiased text-slate-200">
     <header class="fixed top-0 left-0 right-0 z-50 glass-nav h-20 flex items-center justify-between px-8">
         <span class="text-xl font-black text-white tracking-wider">APEX <span class="text-cyan-400">DETAILING</span></span>
-        <a href="#kontakt" class="bg-cyan-500 text-slate-950 font-bold px-5 py-2.5 rounded-xl text-sm">Nezávazná poptávka</a>
-    </header>
-    <section class="pt-40 pb-24 text-center max-w-4xl mx-auto px-4">
-        <div class="inline-block px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-semibold tracking-wide mb-6">
-            PROFESIONÁLNÍ NÁVRH WEBU PRO VAŠI FIRMU
+        <div class="flex items-center gap-6">
+            <nav class="hidden md:flex gap-6 text-sm font-medium text-slate-300">
+                <a href="#sluzby" class="hover:text-cyan-400">Služby</a>
+                <a href="#vysledky" class="hover:text-cyan-400">Před & Po</a>
+                <a href="#kalkulacka" class="hover:text-cyan-400">Kalkulátor</a>
+                <a href="#kontakt" class="hover:text-cyan-400">Kontakt</a>
+            </nav>
+            <a href="#kalkulacka" class="bg-cyan-500 text-slate-950 font-bold px-5 py-2 rounded-xl text-sm shadow-lg shadow-cyan-500/20">Rezervace</a>
         </div>
-        <h1 class="text-4xl sm:text-6xl font-black tracking-tight leading-tight">
-            Posuňte prezentaci vaší myčky na <span class="text-gradient">vyšší úroveň</span>
-        </h1>
-        <p class="text-slate-400 text-lg mt-6 max-w-2xl mx-auto">
-            Připravil jsem pro vás ukázkový moderní web s interaktivním kalkulátorem cen, živým srovnáním před/po a rychlou rezervací.
-        </p>
-        <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
-            <a href="tel:+420777123456" class="bg-gradient-to-r from-cyan-400 to-blue-600 text-slate-950 font-extrabold px-8 py-4 rounded-xl shadow-lg">
-                <i class="fa-solid fa-phone mr-2"></i> Zavolat: +420 777 123 456
-            </a>
+    </header>
+
+    <section class="pt-36 pb-20 max-w-7xl mx-auto px-4">
+        <div class="text-center max-w-3xl mx-auto space-y-6">
+            <div class="inline-block px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-semibold">
+                PRÉMIOVÉ AUTO-DETAILINGOVÉ STUDIO V PRAZE
+            </div>
+            <h1 class="text-4xl sm:text-6xl font-black tracking-tight leading-tight">
+                Dopřejte svému vozu <span class="text-gradient">dokonalý lesk</span> & ochranu.
+            </h1>
+            <p class="text-slate-400 text-lg">Kompletní obnovení vzhledu vozu od hloubkové korekce laku až po keramiku s garancí až 5 let.</p>
         </div>
     </section>
+
+    <!-- Kalkulátor Ceny -->
+    <section id="kalkulacka" class="py-20 bg-slate-950/80 border-t border-slate-800">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-black text-white">Interaktivní kalkulátor ceny</h2>
+                <p class="text-slate-400 text-sm mt-2">Vyberte služby a spočítejte si odhadovanou cenu.</p>
+            </div>
+            <div class="glass-panel rounded-3xl p-6 sm:p-8 space-y-6">
+                <div>
+                    <label class="block text-sm font-bold text-slate-300 mb-3">1. Velikost vozu</label>
+                    <div class="grid grid-cols-3 gap-3">
+                        <button type="button" onclick="setCarType('standard', 1)" id="btnStd" class="p-3 rounded-xl bg-cyan-500/20 border border-cyan-400 text-cyan-300 font-bold text-sm">Hatchback / Sedan</button>
+                        <button type="button" onclick="setCarType('suv', 1.25)" id="btnSuv" class="p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 font-bold text-sm">SUV / Kombi (+25%)</button>
+                        <button type="button" onclick="setCarType('van', 1.45)" id="btnVan" class="p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 font-bold text-sm">VAN (+45%)</button>
+                    </div>
+                </div>
+                <div class="space-y-3 pt-4 border-t border-slate-800">
+                    <label class="block text-sm font-bold text-slate-300 mb-3">2. Požadované služby</label>
+                    <label class="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-slate-800 cursor-pointer">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" onchange="calcTotal()" value="2900" class="calc-cb w-4 h-4 rounded text-cyan-500 bg-slate-800 border-slate-700">
+                            <span class="text-sm font-semibold">Hloubkové čištění interiéru + O3</span>
+                        </div>
+                        <span class="text-cyan-400 font-bold text-sm">2 900 Kč</span>
+                    </label>
+                    <label class="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-slate-800 cursor-pointer">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" onchange="calcTotal()" value="4900" class="calc-cb w-4 h-4 rounded text-cyan-500 bg-slate-800 border-slate-700" checked>
+                            <span class="text-sm font-semibold">Jednofázové leštění laku</span>
+                        </div>
+                        <span class="text-cyan-400 font-bold text-sm">4 900 Kč</span>
+                    </label>
+                    <label class="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-slate-800 cursor-pointer">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" onchange="calcTotal()" value="5000" class="calc-cb w-4 h-4 rounded text-cyan-500 bg-slate-800 border-slate-700" checked>
+                            <span class="text-sm font-semibold">Keramická ochrana Gyeon (3 roky)</span>
+                        </div>
+                        <span class="text-cyan-400 font-bold text-sm">5 000 Kč</span>
+                    </label>
+                </div>
+                <div class="pt-6 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <div>
+                        <span class="text-xs text-slate-400 uppercase">Celková odhadovaná cena:</span>
+                        <div class="text-3xl font-black text-gradient-cyan" id="totalPrice">9 900 Kč</div>
+                    </div>
+                    <a href="#kontakt" class="w-full sm:w-auto bg-cyan-500 text-slate-950 font-bold px-8 py-3 rounded-xl text-center">Nezávazně poptat</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kontakt -->
+    <section id="kontakt" class="py-20 max-w-3xl mx-auto px-4 text-center">
+        <h2 class="text-3xl font-black text-white mb-4">Kontaktujte mě</h2>
+        <p class="text-slate-400 mb-8">Máte zájem o spolupráci nebo vylepšení prezentace? Ozvěte se mi.</p>
+        <a href="tel:+420777123456" class="inline-block bg-gradient-to-r from-cyan-400 to-blue-600 text-slate-950 font-extrabold px-8 py-4 rounded-xl text-lg shadow-lg">
+            <i class="fa-solid fa-phone mr-2"></i> +420 777 123 456
+        </a>
+    </section>
+
+    <script>
+        let mult = 1.0;
+        function setCarType(type, m) {
+            mult = m;
+            ['std', 'suv', 'van'].forEach(t => {
+                const btn = document.getElementById('btn' + t.charAt(0).toUpperCase() + t.slice(1));
+                btn.className = "p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 font-bold text-sm";
+            });
+            document.getElementById('btn' + type.charAt(0).toUpperCase() + type.slice(1)).className = "p-3 rounded-xl bg-cyan-500/20 border border-cyan-400 text-cyan-300 font-bold text-sm";
+            calcTotal();
+        }
+        function calcTotal() {
+            let sum = 0;
+            document.querySelectorAll('.calc-cb').forEach(cb => { if (cb.checked) sum += parseFloat(cb.value); });
+            let final = Math.round(sum * mult);
+            document.getElementById('totalPrice').innerText = final.toLocaleString('cs-CZ') + ' Kč';
+        }
+        calcTotal();
+    </script>
 </body>
 </html>
